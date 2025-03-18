@@ -12,8 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create("categorias_has_contatos", function (Blueprint $table) {
+            $table->id();
             $table->integer("categoria_id")->constrained('categorias');
             $table->integer("contato_id")->constrained('contatos');
+
+            //$table->primary(['categoria_id','contato_id']);
         });
     }
 
