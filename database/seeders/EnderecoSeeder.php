@@ -16,13 +16,16 @@ class EnderecoSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i =0; $i < 2; $i++){
-            DB::table("enderecos")->insert([
+        $logradouro = ['Rua','Apartamento'];
+        $numero = [278, 10];
+        $cidade = ['Itabaiana','Aracaju'];
+        for ($i = 0; $i < 2; $i++) {
 
-                'logradouro' =>Str::random(10),
-                'numero' =>rand(1,9999),
-                'cidade' => Str::random(10),
-                'contato_id'=>$i++
+            DB::table("enderecos")->insert([
+                'logradouro' => $logradouro[$i],
+                'numero' =>$numero[$i],
+                'cidade' => $cidade[$i],
+                'contato_id'=>$i+1,
             ]);
         }
     }

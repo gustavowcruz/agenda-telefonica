@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create("telefones", function (Blueprint $table) {
             $table->id();
-            $table->integer("numero");
+            $table->string("numero");
             $table->integer("contato_id")->constrained('contatos');
             $table->integer("tipo_telefone_id")->constrained('tipos_telefones');
         });

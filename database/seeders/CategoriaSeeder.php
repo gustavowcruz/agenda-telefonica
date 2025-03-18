@@ -14,14 +14,11 @@ class CategoriaSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker::create();
-            for ($i =0; $i < 2; $i++){
-
-
-                DB::table("categorias")->insert([
-
-                    "classificacao" => $faker->word,
-                ]);
-            }
+        $classificacoes = ['Amigo','Vizinho','Parente'];
+        foreach($classificacoes as $classificacao) {
+            DB::table("categorias")->insert([
+            "classificacao" => $classificacao
+            ]);
+        }
     }
 }

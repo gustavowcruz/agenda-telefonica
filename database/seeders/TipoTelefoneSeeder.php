@@ -14,10 +14,10 @@ class TipoTelefoneSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i =0; $i < 2; $i++){
+        $tipos_telefone = ['Celular', 'Fixo'];
+        foreach ($tipos_telefone as $tipo) {
             DB::table("tipos_telefones")->insert([
-
-                'tipo'=>Str::random(10)
+                'tipo'=> $tipo,
             ]);
         }
     }

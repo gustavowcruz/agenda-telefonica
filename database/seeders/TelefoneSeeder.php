@@ -14,12 +14,12 @@ class TelefoneSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i =0; $i < 2; $i++){
+        $numeros = ['79 8122-0462', '79 3214-7271'];
+        for ($i = 0; $i < 2; $i++) {
             DB::table("telefones")->insert([
-
-                'numero' => rand(81000000,99999999),
-                'contato_id' => rand(1,2),
-                'tipo_telefone_id' => rand(1,2),
+                'numero' => $numeros[$i],
+                'contato_id' => 1,
+                'tipo_telefone_id' => 1,
             ]);
         }
     }

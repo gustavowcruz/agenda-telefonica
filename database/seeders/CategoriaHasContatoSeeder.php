@@ -13,10 +13,11 @@ class CategoriaHasContatoSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i =0; $i < 2; $i++){
+        $categorias = [1,3];
+        foreach ($categorias as $categoria) {
             DB::table("categorias_has_contatos")->insert([
-                'categoria_id' => rand(1,2),
-                'contato_id' => rand(1,2)
+                'categoria_id' => $categoria,
+                'contato_id' => 1,
             ]);
         }
     }

@@ -15,13 +15,12 @@ class ContatoSeeder extends Seeder
      */
     public function run(): void
         {
-        $faker = Faker::create();
-            for ($i =0; $i < 2; $i++){
-
+            $nomes = ['Ana','Roberto'];
+            foreach ($nomes as $nome) {
                 DB::table("contatos")->insert([
+                "nome"=> $nome,
+            ]);
 
-                    'nome' => $faker->word,
-                ]);
-            }
         }
+    }
 }
