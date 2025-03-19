@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Illuminate\Support\Str;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 
 class EnderecoSeeder extends Seeder
