@@ -10,7 +10,7 @@ class Contato extends Model
     protected $table = "contatos";
 
     public function categorias(){
-        return $this->belongsToMany(Categoria::class, 'categorias_has_contatos', 'categoria_id', 'contato_id');
+        return $this->belongsToMany(Categoria::class, 'categorias_has_contatos', 'contato_id', 'categoria_id');
     }
     public function enderecos() {
         return $this->hasMany(Endereco::class, 'contato_id');
