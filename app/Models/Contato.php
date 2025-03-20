@@ -9,6 +9,12 @@ class Contato extends Model
 {
     protected $table = "contatos";
 
+    public function getPrimeiroTelefoneAttribute(){
+        return $this->telefones->first()->numero;
+    }
+    public function getContatosRecentesAttribute(){
+        return $this->orderBy('id','desc')->take(10)->get();
+    }
     public function categorias(){
         return $this->belongsToMany(Categoria::class, 'categorias_has_contatos', 'contato_id', 'categoria_id');
     }
