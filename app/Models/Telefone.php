@@ -10,7 +10,7 @@ class Telefone extends Model
 
     //retorna a descrição do TipoTelefone
     public function getTipoAttribute(){
-        return $this->tipoTelefone->tipo;
+        return $this->tipoTelefone->nome;
     }
     public function tipoTelefone(){
         return $this->belongsTo(TipoTelefone::class,"tipo_telefone_id");

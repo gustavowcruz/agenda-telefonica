@@ -16,7 +16,7 @@ class TipoTelefoneSeeder extends Seeder
         $tipos_telefone = ['Celular', 'Fixo'];
         foreach ($tipos_telefone as $tipo) {
             DB::table("tipos_telefones")->insert([
-                'tipo'=> $tipo,
+                'nome'=> $tipo,
             ]);
         }
     }
