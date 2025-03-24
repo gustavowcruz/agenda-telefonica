@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categoria;
-use App\Models\Contato;
-use App\Models\TipoTelefone;
+use App\Models\{Contato, Categoria, Endereco, Telefone, TipoTelefone};
 use Illuminate\Http\Request;
+
 
 class ContatoController extends Controller
 {
     protected $contatos, $categorias, $tipos_telefones;
     public function __construct(Contato $contatos, Categoria $categorias, TipoTelefone $tipos_telefones)
     {
+        $this->telefones = new Telefone();
+        $this->enderecos = new Endereco();
         $this->contatos = $contatos;
         $this->categorias = $categorias->all()->pluck('classificacao', 'id');
         $this->tipos_telefones = $tipos_telefones->all()->pluck('nome','id'); //ele inverte ;)
@@ -40,7 +41,38 @@ class ContatoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       //dd($request->all());
+
+        $contato = $this->contatos->create([
+            'nome'=> $request->nome,
+        ]);
+
+        $endereco = $this->enderecos->create([
+            'cidade' => $request->cidade,
+            'logradouro' => $request->logradouro,
+            'numero' => $request->numero_endereco,
+            'contato_id' => $contato->id,
+
+        ]);
+        $telefone = $this->telefones->create([
+            'numero'=> $request->telefone1,
+            'contato_id' => $contato->id,
+            'tipo_telefone_id' => $request->tipo_telefone1,
+        ]);
+        if (isset($request->telefone2)) {
+            $telefone = $this->telefones->create([
+                'numero'=> $request->telefone2,
+                'contato_id' => $contato->id,
+                'tipo_telefone_id' => $request->tipo_telefone2,
+            ]);
+        };
+        $categorias = $request->categoria_id;
+
+        $categoria = $contato->categorias()->attach(
+            $request->categoria_id
+        );
+
+        return redirect()->route('contatos.index');
     }
 
     /**
@@ -61,7 +93,7 @@ class ContatoController extends Controller
     {
         $categorias = $this->categorias;
         $tipos_telefones = $this->tipos_telefones;
-        $contato = $this->contatos->find($id);
+        $contato = $this->contatos->findOrFail($id);
         return view('contatos.form', compact('contato','categorias','tipos_telefones'));
     }
 
@@ -70,7 +102,7 @@ class ContatoController extends Controller
      */
     public function update(Request $request, Contato $contato)
     {
-        //
+
     }
 
     /**
@@ -78,6 +110,7 @@ class ContatoController extends Controller
      */
     public function destroy(Contato $contato)
     {
-        //
+        $contato = $this->contatos;
+        $contato->destroy($contato->id);
     }
 }
