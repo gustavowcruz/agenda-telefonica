@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create("categorias_has_contatos", function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
 
             //$table->primary(['categoria_id','contato_id']);
         });

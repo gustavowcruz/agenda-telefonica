@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("logradouro");
             $table->integer("numero")->nullable();
             $table->string("cidade");
+            $table->timestamps();
         });
     }
 
