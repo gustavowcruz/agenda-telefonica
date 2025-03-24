@@ -5,7 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Contato extends Model
+
 {
+    //public $timestamps = false;
+    protected $fillable = [
+        'nome',
+    ];
+
     protected $table = "contatos";
 
     public function getPrimeiroTelefoneAttribute(){
@@ -15,7 +21,7 @@ class Contato extends Model
         return $this->orderBy('id','desc')->take(10)->get();
     }
     public function categorias(){
-        return $this->belongsToMany(Categoria::class, 'categorias_has_contatos', 'contato_id', 'categoria_id');
+        return $this->belongsToMany(Categoria::class, 'categorias_has_contatos', 'contato_id', 'categoria_id')->withTimestamps();
     }
     public function enderecos() {
         return $this->hasMany(Endereco::class, 'contato_id');

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Telefone extends Model
 {
+    protected $guarded = [];
     protected $table = "telefones";
 
     //retorna a descrição do TipoTelefone
