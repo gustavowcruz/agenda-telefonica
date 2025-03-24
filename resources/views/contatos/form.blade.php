@@ -7,33 +7,36 @@
     <title>Agenda Telefonica</title>
 </head>
 <body>
-    <form action={{'/store'}} method = 'post'>
+    <form action={{'contatos.store'}} method = 'POST'>
         @csrf
-        <input type='text' name='nome' placeholder='Nome:' required>
-        <input type="text" name='telefone1' placeholder="Número:" required>
-        <select name = 'tipo_telefone1'>
-            <option> -- </option>
-            <?php
-                foreach ($tipos_telefones as $key => $tipo){
-                    echo ' <option name="aparelho1" value="' . $key . '">' . $tipo . '</option>';
-                }
-                ?>
-        </select>
-        <input type="text" name='telefone2' placeholder="Segundo Número:">
-        <select name = 'tipo_telefone2'>
-            <option> -- </option>
-            <?php
-                foreach ($tipos_telefones as $key => $tipo){
-                    echo ' <option  name="aparelho2" value="' . $key . '">' . $tipo . '</option>';
-                }
-                ?>
-        </select><br>
-        <input type='text' name='cidade' placeholder="Cidade:">
-        <input type='text' name='logradouro' placeholder="Endereço:" required><br>
-        <input type='text' name='numero_endereco' placeholder="numero:"><br>
+        <input type='text' name='nome' value="{{isset($contato) ? $contato->nome:null}}" placeholder='Nome:' required>
+        <input type="text" name='telefone1' value="{{isset($contato) ? $contato->primeiroTelefone : null}}" placeholder="Número:" required><br>
+        <?php
+            foreach ($tipos_telefones as $key => $tipo){
+                $checked = isset($contato) && $contato->telefones->first()->tipo_telefone_id == $key ? 'checked' : null;
+                echo ' <input type="radio" name="aparelho1" value="' . $key .'"'.$checked.'>';
+
+                echo '<label>' . $tipo . '</label><br>';
+            }
+        ?>
+
+        <input type="text" name='telefone2' value="{{isset($contato) && null !=($contato->telefones->get(1)) ? $contato->telefones->get(1)->numero : null}}" placeholder="Segundo número:" required><br>
+        <?php
+            foreach ($tipos_telefones as $key => $tipo){
+                $checked = isset($contato) && $contato->telefones->first()->tipo_telefone_id == $key ? 'checked' : null;
+                echo ' <input type="radio" name="aparelho2" value="' . $key .'"'.$checked.'>';
+
+                echo '<label>' . $tipo . '</label><br>';
+            }
+        ?>
+        <input type='text' name='cidade' placeholder="Cidade:" value="{{isset($contato) ? $contato->enderecos->first()->cidade:null}}">
+        <input type='text' name='logradouro' placeholder="Logradouro:" value ="{{isset($contato) ? $contato->enderecos->first()->logradouro:null}}" required><br>
+        <input type='text' name='numero_endereco' placeholder="Número:" value = "{{isset($contato) ? $contato->enderecos->first()->numero:null}}"><br>
             <?php
                 foreach ($categorias as $key => $categoria) {
-                    echo ' <input type = "checkbox" name="categoria_id[]" value="' . $key .'">' . $categoria . '<br>';
+                    $checked = isset($contato) && $contato->categorias->contains($key) ? 'checked' : null;
+                    echo ' <input type = "checkbox" name="categoria_id[]" value="' . $key .'"'.$checked . '>' . $categoria . '<br>';
+                    // $checked = isset($contato) && $contato->telefones->first()->tipo_telefone_id == $key ? 'checked' : null;
                 }
             ?>
 
