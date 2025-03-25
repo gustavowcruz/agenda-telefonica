@@ -103,11 +103,9 @@ class ContatoController extends Controller
      */
     public function update(Request $request, $id)
     {
-       //dd($request->all());
         $contato = tap($this->contatos->findOrFail($id))->update([ //tap(): retorna oq ta dentro do tap e executa o q vem dps
             'nome'=> $request->nome,
         ]);
-        dd($contato);
 
         $endereco = tap($this->enderecos->findOrFail($contato->enderecos->first()->id))->update([
             'cidade' => $request->cidade,
@@ -137,14 +135,21 @@ class ContatoController extends Controller
         } else if($contato->telefones->find(1) == null) {
             $contato->telefones->find(1)->delete();
         }
+
+        $contato->categorias()->sync($request->categoria_id);
+        return redirect()->route('contatos.show', $contato->id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Contato $contato)
+    public function destroy($id)
     {
-        $contato = $this->contatos;
-        $contato->destroy($contato->id);
+        $contato = $this->contatos->find($id);
+        $contato->telefones()->delete();
+        $contato->enderecos()->delete();
+        $contato->categorias()->detach();
+        $contato->delete();
+        return redirect()->route('contatos.index');
     }
 }
