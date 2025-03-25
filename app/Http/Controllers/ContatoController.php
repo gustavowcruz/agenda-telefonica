@@ -14,7 +14,7 @@ class ContatoController extends Controller
         $this->telefones = new Telefone();
         $this->enderecos = new Endereco();
         $this->contatos = $contatos;
-        $this->categorias = $categorias->all()->pluck('classificacao', 'id');
+        $this->categorias = $categorias->all()->pluck('classificacao', 'id'); //quando você pega as coisas que NÃO é pra chamar e só referenciar você faz isso ai [all()->pluck('algm coisa', 'id')]
         $this->tipos_telefones = $tipos_telefones->all()->pluck('nome','id'); //ele inverte ;)
     }
     /**
@@ -82,8 +82,9 @@ class ContatoController extends Controller
     {
         $categorias = $this->categorias;
         $tipos_telefones = $this->tipos_telefones;
+        $form = 'disabled';
         $contato = $this->contatos->find($id);
-        return view('contatos.form', compact('contato','categorias','tipos_telefones'));
+        return view('contatos.form', compact('contato','categorias','tipos_telefones', 'form'));
     }
 
     /**
