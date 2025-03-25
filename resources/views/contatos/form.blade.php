@@ -21,18 +21,18 @@
             foreach ($tipos_telefones as $key => $tipo){
                 $checked = isset($contato) && $contato->telefones->first()->tipo_telefone_id == $key ? 'checked' : null;
                 $disabled = isset($form) ? $form : null;
-                echo '<input type="radio" name="aparelho1" value="' . $key .'" '.$checked . ' ' . $disabled . '>';
+                echo '<input type="radio" name="tipo_telefone1" value="' . $key .'" '.$checked . ' ' . $disabled . '>';
 
                 echo '<label>' . $tipo . '</label><br>';
             }
         ?>
 
-        <input type="text" name='telefone2' value="{{isset($contato) && null !=($contato->telefones->get(1)) ? $contato->telefones->get(1)->numero : null}}" placeholder="Segundo número:" required {{isset($form) ? $form : ' '}}><br>
+        <input type="text" name='telefone2' value="{{isset($contato) && null !=($contato->telefones->get(1)) ? $contato->telefones->get(1)->numero : null}}" placeholder="Segundo número:" {{isset($form) ? $form : ' '}}><br>
         <?php
             foreach ($tipos_telefones as $key => $tipo){
                 $checked = isset($contato) && $contato->telefones->get(1)->tipo_telefone_id == $key ? 'checked' : null;
                 $disabled = isset($form) ? $form : null;
-                echo ' <input type="radio" name="aparelho2" value="' . $key .'"' .$checked. ' ' .$disabled.'>';
+                echo ' <input type="radio" name="tipo_telefone2" value="' . $key .'"' .$checked. ' ' .$disabled.'>';
 
                 echo '<label>' . $tipo . '</label><br>';
             }
@@ -52,5 +52,11 @@
             <br>
         <input type='submit' value = 'Salvar' {{isset($form) ? $form : ' ' }}>
     </form>
+    @isset($contato)
+        <form action="{{ route('contatos.destroy', $contato->id)}}" method='POST'>
+            @csrf
+            @method('DELETE')
+            <button type="submit" {{isset($form) ? $form : ' ' }}> Apagar </button>
+    @endisset
 </body>
 </html>
