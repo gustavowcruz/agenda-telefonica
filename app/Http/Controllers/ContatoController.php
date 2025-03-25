@@ -101,9 +101,42 @@ class ContatoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Contato $contato)
+    public function update(Request $request, $id)
     {
+       //dd($request->all());
+        $contato = tap($this->contatos->findOrFail($id))->update([ //tap(): retorna oq ta dentro do tap e executa o q vem dps
+            'nome'=> $request->nome,
+        ]);
+        dd($contato);
 
+        $endereco = tap($this->enderecos->findOrFail($contato->enderecos->first()->id))->update([
+            'cidade' => $request->cidade,
+            'logradouro' => $request->logradouro,
+            'numero' => $request->numero_endereco,
+            'contato_id' => $contato->id,
+        ]);
+        $telefone = tap($this->telefones->findOrFail($contato->telefones->first()->id))->update([
+            'numero'=> $request->telefone1,
+            'contato_id' => $contato->id,
+            'tipo_telefone_id' => $request->tipo_telefone1,
+        ]);
+        if (isset($request->telefone2)) {
+            if($contato->telefones->find(1) != null) {
+                $telefone = tap($this->telefones->findOrFail($request->telefone2->id))->update([
+                    'numero'=> $request->telefone2,
+                    'contato_id' => $contato->id,
+                    'tipo_telefone_id' => $request->tipo_telefone2,
+                ]);
+            } else {
+                $telefone = $this->telefones->create([
+                    'numero'=> $request->telefone2,
+                    'contato_id' => $contato->id,
+                    'tipo_telefone_id' => $request->tipo_telefone2,
+                ]);
+            }
+        } else if($contato->telefones->find(1) == null) {
+            $contato->telefones->find(1)->delete();
+        }
     }
 
     /**
