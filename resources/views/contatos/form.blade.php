@@ -7,9 +7,14 @@
     <title>Agenda Telefonica</title>
 </head>
 <body>
-    <form action={{'contatos.store'}} method = 'POST'>
-        @csrf
+    @isset($contato)
+        <form action="{{ route('contatos.update', $contato->id)}}" method="POST">
+        @method('PUT')
+    @else
+        <form action={{ route('contatos.store')}} method = 'POST'>
         @method('POST')
+    @endisset
+        @csrf
         <input type='text' name='nome' value="{{isset($contato) ? $contato->nome:null}}" placeholder='Nome:' required {{isset($form) ? $form : ' ' }}>
         <input type="text" name='telefone1' value="{{isset($contato) ? $contato->primeiroTelefone : null}}" placeholder="Número:" required {{isset($form) ? $form : ' ' }}><br>
         <?php
@@ -45,7 +50,7 @@
             ?>
 
             <br>
-        <input type='submit' {{isset($form) ? $form : ' ' }}>
+        <input type='submit' value = 'Salvar' {{isset($form) ? $form : ' ' }}>
     </form>
 </body>
 </html>
