@@ -41,34 +41,31 @@ class ContatoController extends Controller
      */
     public function store(Request $request)
     {
-       //dd($request->all());
-
         $contato = $this->contatos->create([
             'nome'=> $request->nome,
         ]);
 
-        $endereco = $this->enderecos->create([
+        $this->enderecos->create([
             'cidade' => $request->cidade,
             'logradouro' => $request->logradouro,
             'numero' => $request->numero_endereco,
             'contato_id' => $contato->id,
 
         ]);
-        $telefone = $this->telefones->create([
+       $this->telefones->create([
             'numero'=> $request->telefone1,
             'contato_id' => $contato->id,
             'tipo_telefone_id' => $request->tipo_telefone1,
         ]);
         if (isset($request->telefone2)) {
-            $telefone = $this->telefones->create([
+            $this->telefones->create([
                 'numero'=> $request->telefone2,
                 'contato_id' => $contato->id,
                 'tipo_telefone_id' => $request->tipo_telefone2,
             ]);
         };
-        $categorias = $request->categoria_id;
 
-        $categoria = $contato->categorias()->attach(
+        $contato->categorias()->attach(
             $request->categoria_id
         );
 
@@ -107,37 +104,37 @@ class ContatoController extends Controller
             'nome'=> $request->nome,
         ]);
 
-        $endereco = tap($this->enderecos->findOrFail($contato->enderecos->first()->id))->update([
+       tap($this->enderecos->findOrFail($contato->enderecos->first()->id))->update([
             'cidade' => $request->cidade,
             'logradouro' => $request->logradouro,
             'numero' => $request->numero_endereco,
             'contato_id' => $contato->id,
         ]);
-        $telefone = tap($this->telefones->findOrFail($contato->telefones->first()->id))->update([
+        tap($this->telefones->findOrFail($contato->telefones->first()->id))->update([
             'numero'=> $request->telefone1,
             'contato_id' => $contato->id,
             'tipo_telefone_id' => $request->tipo_telefone1,
         ]);
         if (isset($request->telefone2)) {
             if($contato->telefones->find(1) != null) {
-                $telefone = tap($this->telefones->findOrFail($request->telefone2->id))->update([
+                tap($this->telefones->findOrFail($request->telefone2->id))->update([
                     'numero'=> $request->telefone2,
                     'contato_id' => $contato->id,
                     'tipo_telefone_id' => $request->tipo_telefone2,
                 ]);
             } else {
-                $telefone = $this->telefones->create([
+                $this->telefones->create([
                     'numero'=> $request->telefone2,
                     'contato_id' => $contato->id,
                     'tipo_telefone_id' => $request->tipo_telefone2,
                 ]);
             }
-        } else if($contato->telefones->find(1) == null) {
-            $contato->telefones->find(1)->delete();
+        } else if($contato->telefones->get(1) != null) {
+            $contato->telefones->get(1)->delete();
         }
 
         $contato->categorias()->sync($request->categoria_id);
-        return redirect()->route('contatos.show', $contato->id);
+        return redirect()->route('contatos.index', $contato->id);
     }
 
     /**
