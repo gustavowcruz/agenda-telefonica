@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create("enderecos", function (Blueprint $table) {
             $table->id();
             $table->string("logradouro");
-            $table->integer("numero")->nullable();
+            $table->string("numero")->nullable();
             $table->string("cidade");
+            $table->timestamps();
         });
     }
 

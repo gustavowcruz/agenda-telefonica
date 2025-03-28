@@ -18,7 +18,7 @@ class TelefoneSeeder extends Seeder
         for ($i = 0; $i < 2; $i++) {
             DB::table("telefones")->insert([
                 'numero' => $numeros[$i],
-                'contato_id' => 1,
+                'contato_id' => $i+1, //deu erro pq cada ctt precisava de numero
                 'tipo_telefone_id' => 1,
             ]);
         }
