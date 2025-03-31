@@ -30,19 +30,26 @@
             text-decoration: none;
             margin-left: 8px;
             margin-right: 8px;
+            border-radius: 5px;
         }
 
         a:hover {
-            background-color: #E5E5E5;
-        }
-
-        #apagar:hover{
-            background-color: red
+            background-color: #6790c5;
+            color: white;
+            transition: 0.25s;
+            /* padding: 8px; */
         }
         button {
             margin-top: 15px;
-            padding: 7px;
+            padding: 35px;
+            cursor: pointer;
+            border-radius: 7px
 
+        }
+        button:hover {
+            color: white;
+            background-color: rgb(107, 167, 112);
+            transition: 0.25s;
         }
 
     </style>
