@@ -3,7 +3,12 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        {{-- @php
 
+            use App\Models\Contato;
+            $contatos = Contato::find(2)->nome;
+            echo $contatos;
+        @endphp --}}
         <title>Laravel</title>
 
         <!-- Fonts -->
