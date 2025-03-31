@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Agenda Telefonica</title>
+    <title>Agenda Telefônica</title>
     <style>
         div#corpo{
             background-color: #ffffff;
@@ -31,10 +31,11 @@
             color: #868585;
         }
         button{
-            padding: 25px;
+            padding: 20px;
             margin-top: 10px;
             margin-bottom: 30px;
             border-radius: 7px;
+            font-size: 17px;
             cursor: pointer;
         }
         button#apagar:hover{
@@ -106,15 +107,18 @@
             <input type='text' name='nome' value="{{isset($contato) ? $contato->nome : null}}" placeholder='Nome' pattern="[a-zA-Z0-9\s]+" required {{isset($form) ? $form : ' ' }}><br>
             <label> Número <i class="fa-solid fa-phone"></i> <b class= obrigatorio> * </b></label><br>
 
-            <input type="text" name='telefone1' value="{{isset($contato) ? $contato->primeiroTelefone : null}}" pattern="[0-9\s]+"  placeholder="Digite apenas números" required {{isset($form) ? $form : ' ' }}><br>
+            <input type="text" name='telefone1' value="{{isset($contato) ? $contato->primeiroTelefone : null}}" pattern="[0-9\s\-_\']+"  placeholder="Digite apenas números" required {{isset($form) ? $form : ' ' }}><br>
             <label>Modelo <i class="fa-solid fa-mobile-screen"></i><b class= obrigatorio> * </b></label><br>
                 @foreach ($tipos_telefones as $key => $tipo)
                     <input type="radio" name="tipo_telefone1" value="{{$key}}"{{$checked = isset($contato) && $contato->telefones->get(0)->tipo_telefone_id == $key ? 'checked' : null;}} {{$disabled = isset($form) ? $form : null;}}>
                     <label> {{$tipo}} </label><br>
                 @endforeach
             <label>Segundo número <i class="fa-solid fa-phone"></i></label><br>
-            <input type="tel" name='telefone2' value="{{isset($contato) && null != ($contato->telefones->get(1)) ? $contato->telefones->get(1)->numero : null}}" pattern="[0-9\s]+" placeholder="Digite APENAS números" {{$disabled = isset($form) ? $form : ' '}}><br>
+            <input type="tel" name='telefone2' value="{{isset($contato) && null != ($contato->telefones->get(1)) ? $contato->telefones->get(1)->numero : null}}" pattern="[0-9\s\-_\']+" placeholder="Digite APENAS números" {{$disabled = isset($form) ? $form : ' '}}><br>
             <label>Modelo <i class="fa-solid fa-mobile-screen"></i></label><br>
+            @isset($telefone = $request->query(''))
+
+            @endisset
             @foreach ($tipos_telefones as $key => $tipo)
                 <input type="radio" name="tipo_telefone2" value="{{$key}}" {{$checked = isset($contato) && isset($contato->telefones->get(1)->tipo_telefone_id) == $key ? 'checked' : ' ';}} {{$disabled = isset($form) ? $form : null;}}>
                 <label> {{$tipo}} </label><br>
