@@ -116,9 +116,6 @@
             <label>Segundo número <i class="fa-solid fa-phone"></i></label><br>
             <input type="tel" name='telefone2' value="{{isset($contato) && null != ($contato->telefones->get(1)) ? $contato->telefones->get(1)->numero : null}}" pattern="[0-9\s\-_\']+" placeholder="Digite APENAS números" {{$disabled = isset($form) ? $form : ' '}}><br>
             <label>Modelo <i class="fa-solid fa-mobile-screen"></i></label><br>
-            @isset($telefone = $request->query(''))
-
-            @endisset
             @foreach ($tipos_telefones as $key => $tipo)
                 <input type="radio" name="tipo_telefone2" value="{{$key}}" {{$checked = isset($contato) && isset($contato->telefones->get(1)->tipo_telefone_id) == $key ? 'checked' : ' ';}} {{$disabled = isset($form) ? $form : null;}}>
                 <label> {{$tipo}} </label><br>
