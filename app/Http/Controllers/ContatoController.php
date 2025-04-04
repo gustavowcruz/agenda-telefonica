@@ -42,33 +42,55 @@ class ContatoController extends Controller
      */
     public function store(Request $request)
     {
-        $contato = $this->contatos->create([
-            'nome'=> $request->nome,
+        // Validação dos campos
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'cidade' => 'required|string|max:255',
+            'logradouro' => 'required|string|max:255',
+            'numero_endereco' => 'required|string|max:255',
+            'telefone1' => 'required|string|max:15',
+            'tipo_telefone1' => 'required|exists:tipo_telefones,id',
+            'imagem' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validação para a imagem
         ]);
 
+        // Upload da imagem, se fornecida
+        $imagePath = null;
+        if ($request->hasFile('imagem')) {
+            $imagePath = $request->file('imagem')->store('imagens', 'public');
+        }
+
+        // Criação do contato
+        $contato = $this->contatos->create([
+            'nome' => $request->nome,
+            'imagem' => $imagePath, // Salva o caminho da imagem no banco de dados
+        ]);
+
+        // Criação do endereço
         $this->enderecos->create([
             'cidade' => $request->cidade,
             'logradouro' => $request->logradouro,
             'numero' => $request->numero_endereco,
             'contato_id' => $contato->id,
-
         ]);
-       $this->telefones->create([
-            'numero'=> $request->telefone1,
+
+        // Criação do telefone principal
+        $this->telefones->create([
+            'numero' => $request->telefone1,
             'contato_id' => $contato->id,
             'tipo_telefone_id' => $request->tipo_telefone1,
         ]);
+
+        // Criação do telefone secundário, se fornecido
         if (isset($request->telefone2)) {
             $this->telefones->create([
-                'numero'=> $request->telefone2,
+                'numero' => $request->telefone2,
                 'contato_id' => $contato->id,
                 'tipo_telefone_id' => $request->tipo_telefone2,
             ]);
-        };
+        }
 
-        $contato->categorias()->attach(
-            $request->categoria_id
-        );
+        // Relacionamento com categorias
+        $contato->categorias()->attach($request->categoria_id);
 
         return redirect()->route('contatos.index');
     }
