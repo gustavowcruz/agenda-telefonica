@@ -97,13 +97,15 @@
             @method('PUT')
         @else
             <h1> Novo contato <i class="fa-solid fa-user-plus"></i></h1><br>
-            <form action={{route('contatos.store')}} method = 'POST'>
+            <form action={{route('contatos.store')}} method = 'POST' enctype="multipart/form-data">
             @method('POST')
         @endisset
         @csrf
         <div id='contatos'>
-            <label>Nome <i class="fa-solid fa-user"></i><b class= obrigatorio> * </b></label><br>
 
+            <label>Nome <i class="fa-solid fa-user"></i><b class= obrigatorio> * </b></label><br>
+            <label>Adcionar imagem</label>
+            <input type="file" name="imagem" accept="image/*" {{isset($form) ? $form : ' ' }}><br>
             <input type='text' name='nome' value="{{isset($contato) ? $contato->nome : null}}" placeholder='Nome' pattern="[a-zA-Z0-9\s]+" required {{isset($form) ? $form : ' ' }}><br>
             <label> Número <i class="fa-solid fa-phone"></i> <b class= obrigatorio> * </b></label><br>
 
